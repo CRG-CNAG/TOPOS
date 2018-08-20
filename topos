@@ -1,0 +1,84 @@
+#! /usr/bin/env python3
+
+### PARSE ARGUMENTS AND DO APPROPRIATE CHECKS ###
+
+import argparse
+
+parser = argparse.ArgumentParser(description='TOPOS: Tissue-of-Origin Predictor of Onco-Samples. A robust SVM classifier of the cancer type of primary, metastasis and cell line samples.')
+parser.add_argument('n_genes',help='Number of most informative genes to consider. Must be between 1 and 14481.')
+parser.add_argument('normalization',help='Normalization method. Can be either "self" or "train". "self" is recommended to ameliorate batch effects.')
+parser.add_argument('input_matrix',help='Input tsv file with data of cancer samples to predict. Matrix rows correspond to samples and matrix columns correspond to genes, which must be identified with Entrez ids. Expression values must be TPM. See sample files provided ("X_primary.tsv" and "X_met.tsv").')
+parser.add_argument('output_predictions',help='Output tsv file with cancer type predictions for samples.')
+parser.add_argument('-v','--verbose',help='If True, TOPOS will print explanatory messages.')
+args = parser.parse_args()
+
+if (args.normalization != 'self') & (args.normalization != 'train'):
+    raise ValueError('normalization argument should be either "self" or "train"; "{}" is not understood.'.format(args.normalization))
+
+try:
+    if (int(args.n_genes) < 1) | (int(args.n_genes) > 14481):
+        raise ValueError
+except ValueError:
+    raise ValueError('n_genes argument should be an integer between 1 and 14481; "{}" is not'.format(args.n_genes))
+
+if args.verbose is not None:
+    if args.verbose == 'True':
+	    args.verbose = True
+    else:
+        raise ValueError('Optional verbose argument must be True if set; "{}" is not.'.format(args.verbose))
+
+
+### LOAD NEEDED MODULES ###
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+from sklearn.svm import SVC
+
+### READ USER'S DATA AND PREPROCESS IT ###
+
+if args.verbose:
+    print('\n... Running TOPOS: Tissue-of-Origin Predictor of Onco-Samples ...\n')
+
+df_user = pd.read_table(args.input_matrix, index_col=0)
+df_ranking = pd.read_table('./required_data/rfe_ranking.tsv')
+df_ranking['entrez_id'] = df_ranking['entrez_id'].astype(str)
+best_n_genes = df_ranking.loc[df_ranking['ranking'] <= int(args.n_genes),'entrez_id']
+df_user.columns = [str(elem) for elem in df_user.columns]
+X_user = df_user.loc[:,df_user.columns.isin(best_n_genes)]
+
+if args.normalization == 'self':
+    if args.verbose:
+	    print('1. Normalizing data matrix according to "self" method. The user\'s data will be scaled so that each feature has a mean of 0 and a standard deviation of 1 across samples. Such a normalization may help to reduce batch effects if the user\'s samples come from different distribution than the training distribution.', flush=True)
+    scaler = StandardScaler().fit(X_user)
+    X_user_scl = pd.DataFrame(scaler.transform(X_user), index=X_user.index, columns=X_user.columns)
+else:
+    if args.verbose:
+	    print('1. Normalizing data matrix according to "train" method. The user\'s data will be scaled in the same way as the primary training data. This is the correct behaviour if the user\'s samples come from the same distribution as the training distribution. However, if this is not the case, the "self" normalization method is recommended instead in order to avoid batch effects.', flush=True)
+    genes_mean_std = pd.read_table('./required_data/genes_mean_and_std.tsv',index_col=0)
+    genes_mean_std.index = [str(elem) for elem in genes_mean_std.index]
+    X_user_scl = (X_user - genes_mean_std.loc[X_user.columns,'mean'])/(genes_mean_std.loc[X_user.columns,'std'])
+
+### TRAIN CLASSIFIER ON THE GENES AVAILABLE ###
+
+if args.verbose:
+    print('2. Training classifier on {} genes. This number may be smaller than the selected number ({}) if genes in the user\'s matrix are not present in the training matrix, or if the selected number of genes is larger than 2000. The latter is because the gene ranking obtained with RFE does not sort the least important genes one by one, but rather puts them in buckets of decreasing importance. Otherwise RFE would be prohibitive to compute.'.format(args.n_genes,X_user_scl.shape[1]), flush=True)
+
+df_train = pd.read_pickle('./required_data/df_train_prim_met_lines.pkl')
+X_train_scl = df_train.iloc[:,:-1]
+X_train_scl = X_train_scl.loc[:,X_user_scl.columns]
+encoder = LabelEncoder().fit(df_train.iloc[:,-1])
+Y_train = encoder.transform(df_train.iloc[:,-1])
+
+clf = SVC(kernel='linear',C=1).fit(X_train_scl,Y_train)
+
+### PREDICT CANCER TYPES OF USER'S SAMPLES ###
+
+if args.verbose:
+    print('3. Predicting the cancer type of the user\'s samples.')
+
+P_user = pd.Series(encoder.inverse_transform(clf.predict(X_user_scl)),index=X_user_scl.index)
+P_user.to_csv(args.output_predictions,sep='\t')
+
+if args.verbose:
+    print('\n... Wrote predictions to {}. Thank you for using TOPOS ...\n'.format(args.output_predictions))
+
