@@ -6,7 +6,7 @@ A versatile machine-learning classifier based on SVMs to predict the cancer type
 Installation
 ------------
 
-You can download TOPOS and sample input files from [here] (https://drive.google.com/open?id=1TW2kvmtVfqS1MtTNCJH9ZOc6XSZejukH).
+You can download TOPOS and sample input files from [here](https://drive.google.com/open?id=1TW2kvmtVfqS1MtTNCJH9ZOc6XSZejukH).
 
 To get it ready, you just have to unzip and cd into the topos directory.
 
