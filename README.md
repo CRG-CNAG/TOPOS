@@ -6,9 +6,22 @@ A versatile machine-learning classifier based on SVMs to predict the cancer type
 Installation
 ------------
 
-You can download TOPOS and sample input files from [here](https://drive.google.com/open?id=1TW2kvmtVfqS1MtTNCJH9ZOc6XSZejukH).
+If you don't have the required python3 modules installed (pandas, scikit-learn and scipy), go to step 1. If you have them installed, you can go directly to step 2.
 
-To get it ready, you just have to unzip and cd into the topos directory.
+### 1. Installing required python modules
+
+These are the commands that you need to execute in order to get Ubuntu 16.04 LTS ready after a fresh installation.
+
+```
+sudo apt install python3-pip
+pip3 install pandas
+pip3 install sklearn
+pip3 install scipy
+```
+
+### 2. Getting TOPOS ready
+
+You can download TOPOS and sample input files from [here](https://drive.google.com/open?id=1TW2kvmtVfqS1MtTNCJH9ZOc6XSZejukH). Then you just have to unzip and cd into the `topos` directory.
 
 ```
 unzip topos.zip
