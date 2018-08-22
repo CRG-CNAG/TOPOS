@@ -31,7 +31,9 @@ cd topos
 Usage
 -----
 
+```
 ./topos [-h] [-v VERBOSE] n_genes normalization input_matrix output_predictions
+```
 
 Required positional parameters:
 
