@@ -15,8 +15,9 @@ These are the commands that you need to execute in order to get Ubuntu 16.04 LTS
 ```
 sudo apt install python3-pip
 pip3 install pandas
-pip3 install sklearn
+pip3 install scikit-learn==0.19.1
 pip3 install scipy
+pip3 install numpy==1.13.3
 ```
 
 ### 2. Getting TOPOS ready
