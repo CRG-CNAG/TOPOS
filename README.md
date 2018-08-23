@@ -26,7 +26,7 @@ There are to ways to use TOPOS: loading a pretrained model on the gene signature
 
 ### a) Pretrained model
 
-You can download TOPOS and the pretrained model [here](https://drive.google.com/open?id=1_FB7VkkgiSYFOa-CN6JS8NuiiNwozq1k). Then you just have to unzip and cd into the `topos` directory.
+You can download TOPOS and the pretrained model [here](https://drive.google.com/open?id=1blyP0Z_F80S8UE-vyd6wo4siwXWh2baC). Then you just have to unzip and cd into the `topos` directory.
 
 ```
 unzip topos.zip
