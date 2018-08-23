@@ -40,7 +40,7 @@ In addition to the previous steps, you'll have to download the training matrix [
 
 ```
 unzip df_train_prim_met_lines.pkl.zip
-mv df_train_prim_met_lines.pkl.zip topos/required_data/
+mv df_train_prim_met_lines.pkl topos/required_data/
 ```
 
 
