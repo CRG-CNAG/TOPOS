@@ -26,7 +26,7 @@ There are to ways to use TOPOS: loading a pretrained model on the gene signature
 
 ### a) Pretrained model
 
-You can download TOPOS and the pretrained model [here](https://drive.google.com/open?id=1blyP0Z_F80S8UE-vyd6wo4siwXWh2baC). Then you just have to unzip, cd into the `topos` directory and make TOPOS executable.
+You can download TOPOS and the pretrained model [here](https://www.dropbox.com/s/mkgve6y2nyhas6u/topos.zip?dl=0). Then you just have to unzip, cd into the `topos` directory and make TOPOS executable.
 
 ```
 unzip topos.zip
@@ -36,7 +36,7 @@ sudo chmod +x topos
 
 ### b) Retrained model
 
-In addition to the previous steps, you'll have to download the training matrix [here](https://drive.google.com/open?id=1faCXPBDq5yYmaufPfXW4huDgbl-H4roh). Then you just have to unzip it and copy to the `required_data` directory.
+In addition to the previous steps, you'll have to download the training matrix [here](https://www.dropbox.com/s/doh8eb0pky2y33a/df_train_prim_met_lines.pkl.zip?dl=0). Then you just have to unzip it and copy to the `required_data` directory.
 
 ```
 unzip df_train_prim_met_lines.pkl.zip
