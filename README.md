@@ -70,7 +70,7 @@ Example
 Loading the pretrained model of TOPOS, scaling the user's data in a way that enforces that every feature has a mean of 0 and a standard deviation of 1, and saving the predictions to ```P_primary_pretrained.tsv```.
 
 ```
-./topos pretrained 80 self ./sample_input_matrices/X_primary.tsv P_primary_pretrained.tsv --verbose True
+./topos -v True pretrained 80 self ./sample_input_matrices/X_primary.tsv P_primary_pretrained.tsv --verbose True
 ```
 
 Retraining TOPOS on the 500 best genes, scaling the user's data in the same way as the training matrix, and saving the predictions to ```P_primary_retrained.tsv```.
