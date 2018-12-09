@@ -26,7 +26,7 @@ There are to ways to use TOPOS: loading a pretrained model on the gene signature
 
 ### a) Pretrained model
 
-You can find the link to download TOPOS and the pretrained model [here](https://github.com/CRG-CNAG/TOPOS/). Then you just have to unzip, cd into the `topos` directory and make TOPOS executable.
+You can download TOPOS and the pretrained model [here](https://www.dropbox.com/s/yztuim6gb8a90he/topos.zip?dl=0). Then you just have to unzip, cd into the `topos` directory and make TOPOS executable.
 
 ```
 unzip topos.zip
@@ -36,7 +36,7 @@ sudo chmod +x topos
 
 ### b) Retrained model
 
-In addition to the previous steps, you'll have to download the training matrix, for which you can find the link [here](https://github.com/CRG-CNAG/TOPOS/). Then you just have to unzip it and copy to the `required_data` directory.
+In addition to the previous steps, you'll have to download the training matrix, which can find [here](https://www.dropbox.com/s/doh8eb0pky2y33a/df_train_prim_met_lines.pkl.zip?dl=0). Then you just have to unzip it and copy to the `required_data` directory.
 
 ```
 unzip df_train_prim_met_lines.pkl.zip
